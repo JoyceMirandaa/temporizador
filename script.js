@@ -1,32 +1,47 @@
 document.addEventListener('DOMContentLoaded', ()=>{
-    const pausar = document.getElementById('pausar');
     const message = document.getElementById('messagem-final');
+    let destinop = document.getElementById("contagem-numero");
+    let timer = 0;
+   
    
     document.getElementById('iniciar').addEventListener('click', function() {
-        let contagem = document.getElementById("inserir-numero").value;
-        let destinop = document.getElementById("contagem-numero");
-
-        setInterval(() => {
-            contagem--
-            console.log(destinop);
-            destinop.innerText = contagem;
-
-            if (contagem == 0){
-                clearInterval(contagem);
-                destinop = null;
-                mostrarMensagem("Tempo Acabou!!");
-                document.getElementById('contagem-numero').textContent = '';
-            } else if(contagem < 0){
-                clearInterval(contagem);
-                destinop = null;
-                mostrarMensagem("Número Inválido");
-                document.getElementById('contagem-numero').textContent = '';
+        limparMensagem();
+        let inserir = document.getElementById("inserir-numero");
+        let contagem = Number(inserir.value);
+        if (timer == 0){
+            if (contagem <= 0){
+                mostrarMensagem("Número Inválido")
+                return;
             }
-        }, 1000);
+            timer = setInterval(() => {
+                if (contagem <= 1){
+                    clearInterval(timer);
+                    destinop.innerText = "";
+                    mostrarMensagem("Tempo Acabou!!");
+                    timer = 0;
+                    return
+                } else if(contagem < 0){
+                    clearInterval(timer);
+                    mostrarMensagem("Número Inválido");
+                    timer = 0;
+                    return
+                } else{
+                    contagem--
+                    destinop.innerText = contagem;
+                }
+            }, 1000);
+        } else{
+            clearInterval(timer);
+            timer = 0;
+        }
     });
 
-    function mostrarMensagem(text,color){
+    function mostrarMensagem(text){
         message.textContent = text;
+    }
+
+    function limparMensagem() {
+        message.textContent = "";
     }
 
     
